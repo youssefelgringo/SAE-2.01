@@ -16,5 +16,20 @@ namespace SAE_2._01
         {
             InitializeComponent();
         }
+
+        private void radioButton2_Click(object sender, EventArgs e)
+        {
+            if(radioButton2.Checked == true) {
+                textBox2.Enabled = false;
+            }
+        }
+
+        private void radioButton1_Click(object sender, EventArgs e)
+        {
+            if (radioButton1.Checked == true)
+            {
+                textBox2.Enabled = true;
+            }
+        }
     }
 }
