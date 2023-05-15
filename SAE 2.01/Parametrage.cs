@@ -10,9 +10,9 @@ using System.Windows.Forms;
 
 namespace SAE_2._01
 {
-    public partial class Form1 : Form
+    public partial class Parametrage : Form
     {
-        public Form1()
+        public Parametrage()
         {
             InitializeComponent();
         }
@@ -30,6 +30,15 @@ namespace SAE_2._01
             {
                 textBox2.Enabled = true;
             }
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            Form2 jeuPrincipal = new Form2();
+
+            jeuPrincipal.Show();
+
+            this.Hide();
         }
     }
 }

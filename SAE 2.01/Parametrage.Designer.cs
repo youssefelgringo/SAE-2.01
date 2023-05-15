@@ -1,6 +1,6 @@
 ﻿namespace SAE_2._01
 {
-    partial class Form1
+    partial class Parametrage
     {
         /// <summary>
         /// Variable nécessaire au concepteur.
@@ -295,6 +295,7 @@
             this.button1.TabIndex = 2;
             this.button1.Text = "JOUER !";
             this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // Form1
             // 
