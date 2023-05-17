@@ -8,5 +8,8 @@ namespace classes_SAE_2._01
 {
     internal class Joueur
     {
+        public string nom;
+        public byte couleurPiece; //0=Jaune 1=Rouge
+        public int[] grille;
     }
 }

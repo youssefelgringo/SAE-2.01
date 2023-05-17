@@ -12,18 +12,18 @@ namespace classes_SAE_2._01
         public int largeur;
         public int[] grille;
 
-        private static int[] initialiser(int hauteur, int largeur)
+        /*private static int[] initialiser(int hauteur, int largeur)
         {
             int[,] grille = new int[hauteur, largeur];
 
             return grille;
-        }
+        }*/
 
         private static void afficher()
         {
 
         }
 
-        private static void ajouter_jeton()
+        //private static void ajouter_jeton()
     }
 }

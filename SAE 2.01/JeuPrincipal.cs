@@ -19,7 +19,12 @@ namespace SAE_2._01
 
         private void Form2_Load(object sender, EventArgs e)
         {
+            
+        }
 
+        private void button1_Click(object sender, EventArgs e)
+        {
+            tableLayoutPanel1.ColumnCount = tableLayoutPanel1.ColumnCount + 1;
         }
     }
 }

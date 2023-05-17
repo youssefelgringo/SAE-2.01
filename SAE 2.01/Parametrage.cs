@@ -40,5 +40,23 @@ namespace SAE_2._01
 
             this.Hide();
         }
+
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (comboBox1.SelectedItem == "Rouge")
+                comboBox2.SelectedItem = "Jaune";
+
+            if (comboBox1.SelectedItem == "Jaune")
+                comboBox2.SelectedItem = "Rouge";
+        }
+
+        private void comboBox2_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (comboBox2.SelectedItem == "Rouge")
+                comboBox1.SelectedItem = "Jaune";
+
+            if (comboBox2.SelectedItem == "Jaune")
+                comboBox1.SelectedItem = "Rouge";
+        }
     }
 }

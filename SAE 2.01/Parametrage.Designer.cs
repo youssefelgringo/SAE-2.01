@@ -102,6 +102,7 @@
             this.comboBox2.Name = "comboBox2";
             this.comboBox2.Size = new System.Drawing.Size(100, 24);
             this.comboBox2.TabIndex = 6;
+            this.comboBox2.SelectedIndexChanged += new System.EventHandler(this.comboBox2_SelectedIndexChanged);
             // 
             // comboBox1
             // 
@@ -113,6 +114,7 @@
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(100, 24);
             this.comboBox1.TabIndex = 5;
+            this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
             // 
             // label2
             // 
@@ -252,9 +254,9 @@
             this.label6.AutoSize = true;
             this.label6.Location = new System.Drawing.Point(23, 90);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(179, 16);
+            this.label6.Size = new System.Drawing.Size(198, 16);
             this.label6.TabIndex = 2;
-            this.label6.Text = "Nombre de lignes de la grille";
+            this.label6.Text = "Nombre de colonnes de la grille";
             // 
             // label5
             // 
@@ -297,7 +299,7 @@
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
-            // Form1
+            // Parametrage
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -306,7 +308,7 @@
             this.Controls.Add(this.button1);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
-            this.Name = "Form1";
+            this.Name = "Parametrage";
             this.Text = "Paramétrage de la partie de Puissance 4";
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
