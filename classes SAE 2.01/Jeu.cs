@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace classes_SAE_2._01
 {
-    internal class Jeu
+    public class Jeu
     {
         public int hauteur;
         public int largeur;

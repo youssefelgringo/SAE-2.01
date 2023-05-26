@@ -12,6 +12,8 @@ namespace SAE_2._01
 {
     public partial class Parametrage : Form
     {
+        public static int nbColonnes = 0;
+        public static int nbLignes = 0;
         public Parametrage()
         {
             InitializeComponent();
@@ -57,6 +59,23 @@ namespace SAE_2._01
 
             if (comboBox2.SelectedItem == "Jaune")
                 comboBox1.SelectedItem = "Rouge";
+        }
+
+        private void numericUpDown2_ValueChanged(object sender, EventArgs e)
+        {
+            nbColonnes = Convert.ToInt32(numericUpDown2.Value);
+            Console.WriteLine(nbColonnes);
+        }
+
+        private void numericUpDown1_ValueChanged(object sender, EventArgs e)
+        {
+            nbLignes = Convert.ToInt32(numericUpDown1.Value);
+        }
+
+        private void Parametrage_Load(object sender, EventArgs e)
+        {
+            nbColonnes = Convert.ToInt32(numericUpDown2.Value);
+            nbLignes = Convert.ToInt32(numericUpDown1.Value);
         }
     }
 }
