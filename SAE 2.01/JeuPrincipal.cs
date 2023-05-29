@@ -1,36 +1,32 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using classes_SAE_2._01;
 
 namespace SAE_2._01
 {
     public partial class Form2 : Form
     {
-        Parametrage Parametrage;
-        public int nbColonnes;
-        public int nbLignes;
-        
-        public Form2()
-        {
-            InitializeComponent();
-        }
+        private int nbColonnes;
+        private int nbLignes;
+        private const int CellSize = 100; // Taille des cellules de la grille
 
         private void Form2_Load(object sender, EventArgs e)
         {
-            Parametrage = new Parametrage();
+            // Générer une grille de Puissance 4 en fonction du nombre de lignes et de colonnes
 
-            nbColonnes = Parametrage.nbColonnes;
-            nbLignes = Parametrage.nbLignes;
+            int cellSize = 100; // Taille des cellules de la grille
+            int spacing = 0; // Espacement entre les cellules
 
-            tableLayoutPanel1.ColumnCount = nbColonnes;
-            tableLayoutPanel1.RowCount = nbLignes;
+            // Calculer la taille de la grille
+            int gridWidth = nbColonnes * (cellSize + spacing) - spacing;
+            int gridHeight = nbLignes * (cellSize + spacing) - spacing;
+
+            // Centrer la grille au milieu de la fenêtre
+            int startX = (this.ClientSize.Width - gridWidth) / 2;
+            int startY = (this.ClientSize.Height - gridHeight) / 2;
+
 
             // Ajouter les PictureBox à la grille
             for (int row = 0; row < nbLignes; row++)
@@ -38,26 +34,37 @@ namespace SAE_2._01
                 for (int column = 0; column < nbColonnes; column++)
                 {
                     PictureBox pictureBox = new PictureBox();
-                    pictureBox.BackgroundImage = Properties.Resources.image;
+                    pictureBox.BackgroundImage = Properties.Resources.image; // Image à utiliser pour les cellules
                     pictureBox.SizeMode = PictureBoxSizeMode.StretchImage;
-                    pictureBox.Size = new Size(102, 99);
-                    pictureBox.Dock = DockStyle.Fill; // Remplit la cellule de la grille
-                    pictureBox.Margin = new Padding(0);
-                    tableLayoutPanel1.Controls.Add(pictureBox, column, row);
+                    pictureBox.Size = new Size(cellSize, cellSize);
+
+                    // Positionner la cellule dans la grille
+                    int cellX = startX + column * (cellSize + spacing);
+                    int cellY = startY + row * (cellSize + spacing);
+                    pictureBox.Location = new Point(cellX, cellY);
+
+                    this.Controls.Add(pictureBox);
                 }
             }
-            // Ajuster automatiquement la taille de la grille dans le formulaire
-            tableLayoutPanel1.AutoSize = true;
-            tableLayoutPanel1.AutoSizeMode = AutoSizeMode.GrowAndShrink;
 
-            // Ajuster la taille du formulaire en fonction de la grille
-            tableLayoutPanel1.Dock = DockStyle.Fill;
-
+            // Supprimer le carré qui apparaît dans la grille
+            tableLayoutPanel1.Visible = false;
         }
 
-        /*static void Main(string[] args)
+
+
+
+
+
+
+        public Form2()
         {
+            InitializeComponent();
+            nbColonnes = Parametrage.nbColonnes;
+            nbLignes = Parametrage.nbLignes;
             
-        }*/
+        }
+
+        
     }
 }

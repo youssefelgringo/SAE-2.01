@@ -37,13 +37,12 @@ namespace SAE_2._01
         private void button1_Click(object sender, EventArgs e)
         {
             Form2 jeuPrincipal = new Form2();
-
             jeuPrincipal.Show();
-
             this.Hide();
         }
 
-        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+
+            private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (comboBox1.SelectedItem == "Rouge")
                 comboBox2.SelectedItem = "Jaune";
