@@ -38,9 +38,7 @@ namespace SAE_2._01
                         premierJeton = jetonCourant;
                     }
 
-                    // Vérification si la grille est entièrement remplie (match nul)
-                    if (tableLayoutPanel.Controls.Count == nbLignes * nbColonnes)
-                        return true; // La grille est entièrement remplie, match nul
+                    
                 }
             }
 
@@ -143,6 +141,26 @@ namespace SAE_2._01
                     }
                 }
             }
+
+            // Vérification si la grille est entièrement remplie (match nul)
+            bool grilleComplete = true;
+            for (int ligne = 0; ligne < nbLignes; ligne++)
+            {
+                for (int colonne = 0; colonne < nbColonnes; colonne++)
+                {
+                    PictureBox jetonCourant = tableLayoutPanel.GetControlFromPosition(colonne, ligne) as PictureBox;
+                    if (jetonCourant == null)
+                    {
+                        grilleComplete = false;
+                        break;
+                    }
+                }
+                if (!grilleComplete)
+                    break;
+                if (grilleComplete)
+                    return true; // La grille est entièrement remplie, match nul
+            }
+
 
             return false; // Aucune condition de fin de partie n'a été rencontrée
         }
