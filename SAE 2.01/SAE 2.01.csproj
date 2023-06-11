@@ -65,6 +65,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DetailsJeu.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DetailsJeu.Designer.cs">
+      <DependentUpon>DetailsJeu.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FinPartie.cs" />
+    <Compile Include="IA.cs" />
+    <Compile Include="Joueur.cs" />
     <Compile Include="Parametrage.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -79,6 +88,9 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="DetailsJeu.resx">
+      <DependentUpon>DetailsJeu.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="JeuPrincipal.resx">
       <DependentUpon>JeuPrincipal.cs</DependentUpon>
     </EmbeddedResource>
@@ -107,12 +119,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\classes SAE 2.01\classes SAE 2.01.csproj">
-      <Project>{32957cf8-8a5d-4454-bf81-2e8fac17be57}</Project>
-      <Name>classes SAE 2.01</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.7.2">

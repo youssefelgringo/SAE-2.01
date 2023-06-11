@@ -140,6 +140,7 @@
             this.textBox2.Name = "textBox2";
             this.textBox2.Size = new System.Drawing.Size(100, 22);
             this.textBox2.TabIndex = 2;
+            this.textBox2.TextChanged += new System.EventHandler(this.textBox2_TextChanged);
             // 
             // textBox1
             // 
@@ -147,6 +148,7 @@
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(100, 22);
             this.textBox1.TabIndex = 1;
+            this.textBox1.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
             // 
             // panel1
             // 
@@ -231,7 +233,7 @@
             // 
             this.numericUpDown2.Location = new System.Drawing.Point(26, 110);
             this.numericUpDown2.Maximum = new decimal(new int[] {
-            20,
+            12,
             0,
             0,
             0});
@@ -272,7 +274,7 @@
             // 
             this.numericUpDown1.Location = new System.Drawing.Point(26, 59);
             this.numericUpDown1.Maximum = new decimal(new int[] {
-            20,
+            8,
             0,
             0,
             0});
@@ -311,6 +313,7 @@
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.Name = "Parametrage";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Paramétrage de la partie de Puissance 4";
             this.Load += new System.EventHandler(this.Parametrage_Load);
             this.groupBox1.ResumeLayout(false);
@@ -343,11 +346,11 @@
         private System.Windows.Forms.ComboBox comboBox2;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.NumericUpDown numericUpDown3;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Button button1;
         public System.Windows.Forms.NumericUpDown numericUpDown1;
         public System.Windows.Forms.NumericUpDown numericUpDown2;
+        public System.Windows.Forms.NumericUpDown numericUpDown3;
     }
 }
 
