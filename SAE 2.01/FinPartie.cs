@@ -37,6 +37,10 @@ namespace SAE_2._01
                         nbJetonsAlignes = 1;
                         premierJeton = jetonCourant;
                     }
+
+                    // Vérification si la grille est entièrement remplie (match nul)
+                    if (tableLayoutPanel.Controls.Count == nbLignes * nbColonnes)
+                        return true; // La grille est entièrement remplie, match nul
                 }
             }
 
