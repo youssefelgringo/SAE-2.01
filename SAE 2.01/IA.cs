@@ -1,142 +1,236 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace SAE_2._01
 {
     internal class IA
     {
-        FinPartie FinPartie = new FinPartie();
+        private FinPartie finPartie = new FinPartie();
+        public int joueurMax = 1; // Le joueur Max est représenté par 1
+        public int joueurMin = 2; // Le joueur Min est représenté par 2
+        private Color couleurJoueurMax = Color.Red;
+        private Color couleurJoueurMin = Color.Yellow;
+        private Random random;
+
+        public IA()
+        {
+            random = new Random();
+        }
+
         public int MinMax(TableLayoutPanel tableLayoutPanel1, int profondeur, bool evalMax)
         {
-            if (profondeur == 0 || FinPartie.DetectionFinDePartie(tableLayoutPanel1)) // Si la profondeur est 0 ou la partie est terminée
+            if (profondeur == 0 || finPartie.VerifierVictoire(tableLayoutPanel1, tableLayoutPanel1.RowCount, tableLayoutPanel1.ColumnCount, null) || finPartie.VerifierMatchNul(tableLayoutPanel1, tableLayoutPanel1.RowCount, tableLayoutPanel1.ColumnCount))
             {
                 return Evaluer(tableLayoutPanel1); // Retourne l'évaluation du nœud
             }
-            else
+
+            int meilleurScore = evalMax ? int.MinValue : int.MaxValue; // Meilleur score initial selon evalMax
+
+            int meilleurCoup = -1; // Pour suivre la colonne du meilleur coup
+
+            for (int colonne = 0; colonne < tableLayoutPanel1.ColumnCount; colonne++)
             {
-                if (evalMax) // Si c'est le tour du joueur Max
-                {
-                    int max = int.MinValue; // Valeur initiale maximale
-                    int valeurMax = MinMax(tableLayoutPanel1, profondeur - 1, false); // Appel récursif avec evalMax à false pour le joueur Min
-                    max = Math.Max(max, valeurMax); // Mise à jour de la valeur maximale
+                // Effectue la simulation du coup en posant un jeton dans la colonne correspondante
+                PictureBox piece = JouerCoup(tableLayoutPanel1, colonne, evalMax ? joueurMax : joueurMin);
 
-                    return max; // Retourne la valeur maximale
-                }
-                else // Si c'est le tour du joueur Min
-                {
-                    int min = int.MaxValue; // Valeur initiale minimale
-                    int valeurMin = MinMax(tableLayoutPanel1, profondeur - 1, true); // Appel récursif avec evalMax à true pour le joueur Max
-                    min = Math.Min(min, valeurMin); // Mise à jour de la valeur minimale
+                // Appel récursif avec evalMax inversé pour l'adversaire
+                int valeur = MinMax(tableLayoutPanel1, profondeur - 1, !evalMax);
 
-                    return min; // Retourne la valeur minimale
+                // Met à jour le meilleur score et le meilleur coup en fonction du joueur actuel
+                if ((evalMax && valeur > meilleurScore) || (!evalMax && valeur < meilleurScore))
+                {
+                    meilleurScore = valeur;
+                    meilleurCoup = colonne;
                 }
+
+                // Annule le coup
+                AnnulerCoup(piece);
             }
+
+            // Condition d'arrêt supplémentaire : si le meilleur score atteint une valeur extrême, on arrête la recherche
+            if ((evalMax && meilleurScore == 1000) || (!evalMax && meilleurScore == -1000))
+            {
+                return meilleurScore;
+            }
+
+            if (profondeur == 6)
+            {
+                return meilleurCoup; // Retourne le meilleur coup lors du premier appel à MinMax
+            }
+
+            return meilleurScore; // Retourne le meilleur score
+        }
+
+        public int TrouverMeilleurCoup(TableLayoutPanel tableLayoutPanel1)
+        {
+            int meilleurCoup = -1;
+            int meilleurScore = int.MinValue;
+
+            for (int colonne = 0; colonne < tableLayoutPanel1.ColumnCount; colonne++)
+            {
+                // Vérifiez si la colonne est pleine
+                if (EstColonnePleine(tableLayoutPanel1, colonne))
+                    continue;
+
+                // Effectue la simulation du coup en posant un jeton dans la colonne correspondante
+                PictureBox piece = JouerCoup(tableLayoutPanel1, colonne, joueurMax);
+
+                // Appel récursif pour évaluer le score du coup
+                int score = EvaluerCoup(tableLayoutPanel1, colonne, joueurMax);
+
+                // Met à jour le meilleur score et le meilleur coup
+                if (score > meilleurScore)
+                {
+                    meilleurScore = score;
+                    meilleurCoup = colonne;
+                }
+
+                // Annule le coup
+                AnnulerCoup(piece);
+            }
+
+            return meilleurCoup;
+        }
+
+        private bool EstColonnePleine(TableLayoutPanel tableLayoutPanel1, int colonne)
+        {
+            for (int ligne = 0; ligne < tableLayoutPanel1.RowCount; ligne++)
+            {
+                PictureBox cellule = (PictureBox)tableLayoutPanel1.GetControlFromPosition(colonne, ligne);
+                if (cellule.Tag == null)
+                    return false;
+            }
+
+            return true;
+        }
+
+        private int EvaluerCoup(TableLayoutPanel tableLayoutPanel1, int colonne, int joueur)
+        {
+            // Place temporairement le jeton dans la colonne correspondante
+            PictureBox piece = JouerCoup(tableLayoutPanel1, colonne, joueur);
+
+            // Évalue le score du coup
+            int score = Evaluer(tableLayoutPanel1);
+
+            // Annule le coup
+            AnnulerCoup(piece);
+
+            return score;
         }
 
         public int Evaluer(TableLayoutPanel tableLayoutPanel1)
-    {
-        int score = 0;
-        int joueurMax = 1; // Le joueur Max est représenté par 1
-        int joueurMin = 2; // Le joueur Min est représenté par 2
-
-        // Évaluation des lignes horizontales
-        for (int ligne = 0; ligne < tableLayoutPanel1.RowCount; ligne++)
         {
-            for (int colonne = 0; colonne < tableLayoutPanel1.ColumnCount - 3; colonne++)
+            int score = 0;
+
+            // Évaluation des lignes horizontales, verticales et diagonales
+            for (int ligne = 0; ligne < tableLayoutPanel1.RowCount; ligne++)
             {
-                for (int k = 0; k <= 4; k++)
+                for (int colonne = 0; colonne < tableLayoutPanel1.ColumnCount; colonne++)
                 {
-                    PictureBox cellPictureBox = tableLayoutPanel1.GetControlFromPosition(colonne + k, ligne) as PictureBox;
-                    int valeurCase = (cellPictureBox != null && cellPictureBox.BackColor == Color.Red) ? joueurMax : (cellPictureBox != null && cellPictureBox.BackColor == Color.Yellow) ? joueurMin : 0;
-                    if (valeurCase == joueurMax)
-                        score++;
-                    else if (valeurCase == joueurMin)
-                        score--;
+                    int scoreLigne = EvaluerFenetre(tableLayoutPanel1, ligne, colonne, 0, 1);
+                    int scoreColonne = EvaluerFenetre(tableLayoutPanel1, ligne, colonne, 1, 0);
+                    int scoreDiagonale1 = EvaluerFenetre(tableLayoutPanel1, ligne, colonne, 1, 1);
+                    int scoreDiagonale2 = EvaluerFenetre(tableLayoutPanel1, ligne, colonne, 1, -1);
+
+                    // Met à jour le score global
+                    score += scoreLigne + scoreColonne + scoreDiagonale1 + scoreDiagonale2;
                 }
-                Console.WriteLine(score);
-                score += FenetreScore(score);
             }
+
+            return score;
         }
 
-        // Évaluation des lignes verticales
-        for (int colonne = 0; colonne < tableLayoutPanel1.ColumnCount; colonne++)
+        // Méthode auxiliaire pour évaluer une fenêtre de 4 cases
+        private int EvaluerFenetre(TableLayoutPanel tableLayoutPanel1, int ligne, int colonne, int deltaLigne, int deltaColonne)
         {
-            for (int ligne = 0; ligne < tableLayoutPanel1.RowCount - 3; ligne++)
+            int score = 0;
+            int joueurMaxScore = 0; // Score du joueur Max dans la fenêtre
+            int joueurMinScore = 0; // Score du joueur Min dans la fenêtre
+
+            for (int k = 0; k < 4; k++)
             {
-                for (int k = 0; k <= 4; k++)
+                int nouvelIndiceLigne = ligne + k * deltaLigne;
+                int nouvelIndiceColonne = colonne + k * deltaColonne;
+
+                // Vérifier si les indices sont valides
+                if (nouvelIndiceLigne >= 0 && nouvelIndiceLigne < tableLayoutPanel1.RowCount &&
+                    nouvelIndiceColonne >= 0 && nouvelIndiceColonne < tableLayoutPanel1.ColumnCount)
                 {
-                    PictureBox cellPictureBox = tableLayoutPanel1.GetControlFromPosition(colonne, ligne + k) as PictureBox;
-                    int valeurCase = (cellPictureBox != null && cellPictureBox.BackColor == Color.Red) ? joueurMax : (cellPictureBox != null && cellPictureBox.BackColor == Color.Yellow) ? joueurMin : 0;
-                    if (valeurCase == joueurMax)
-                        score++;
-                    else if (valeurCase == joueurMin)
-                        score--;
+                    Control cellControl = tableLayoutPanel1.GetControlFromPosition(nouvelIndiceColonne, nouvelIndiceLigne);
+
+                    if (cellControl != null && cellControl is PictureBox)
+                    {
+                        PictureBox cellPictureBox = (PictureBox)cellControl;
+
+                        if (cellPictureBox.BackColor == couleurJoueurMax)
+                            joueurMaxScore++;
+                        else if (cellPictureBox.BackColor == couleurJoueurMin)
+                            joueurMinScore++;
+                    }
+                    else
+                    {
+                        // Gérer le cas où le contrôle renvoyé n'est pas un PictureBox ou est null
+                        score += 0;
+                    }
                 }
-                score += FenetreScore(score);
+                else
+                {
+                    // Gérer le cas où les indices sont hors limites
+                    score += 0;
+                }
             }
+
+            if (joueurMaxScore == 4)
+                score += 1000; // Joueur Max a gagné
+            else if (joueurMinScore == 4)
+                score -= 1000; // Joueur Min a gagné
+            else if (joueurMaxScore == 3 && joueurMinScore == 0)
+                score += 100; // Joueur Max est proche de gagner
+            else if (joueurMaxScore == 0 && joueurMinScore == 3)
+                score -= 100; // Joueur Min est proche de gagner
+            else if (joueurMaxScore == 2 && joueurMinScore == 0)
+                score += 10; // Joueur Max a un avantage
+            else if (joueurMaxScore == 0 && joueurMinScore == 2)
+                score -= 10; // Joueur Min a un avantage
+
+            return score;
         }
 
-        // Évaluation des diagonales (diagonales ascendantes)
-        for (int ligne = 0; ligne < tableLayoutPanel1.RowCount - 3; ligne++)
+        // Méthode pour jouer un coup en posant un jeton dans la colonne correspondante
+        private PictureBox JouerCoup(TableLayoutPanel tableLayoutPanel1, int colonne, int joueur)
         {
-            for (int colonne = 0; colonne < tableLayoutPanel1.ColumnCount - 3; colonne++)
+            PictureBox piece = null;
+
+            for (int ligne = tableLayoutPanel1.RowCount - 1; ligne >= 0; ligne--)
             {
-                for (int k = 0; k <= 4; k++)
+                PictureBox cellule = (PictureBox)tableLayoutPanel1.GetControlFromPosition(colonne, ligne);
+                if (cellule.Tag == null)
                 {
-                    PictureBox cellPictureBox = tableLayoutPanel1.GetControlFromPosition(colonne + k, ligne + k) as PictureBox;
-                    int valeurCase = (cellPictureBox != null && cellPictureBox.BackColor == Color.Red) ? joueurMax : (cellPictureBox != null && cellPictureBox.BackColor == Color.Yellow) ? joueurMin : 0;
-                    if (valeurCase == joueurMax)
-                        score++;
-                    else if (valeurCase == joueurMin)
-                        score--;
+                    // Place le jeton dans la cellule correspondante
+                    if (joueur == joueurMax)
+                        cellule.BackColor = couleurJoueurMax;
+                    else if (joueur == joueurMin)
+                        cellule.BackColor = couleurJoueurMin;
+
+                    cellule.Tag = joueur; // Définit le joueur dans le Tag de la cellule
+
+                    piece = cellule; // Sauvegarde la référence à la cellule jouée
+                    break;
                 }
-                score += FenetreScore(score);
             }
+
+            return piece;
         }
 
-        // Évaluation des diagonales (diagonales descendantes)
-        for (int ligne = 0; ligne < tableLayoutPanel1.RowCount - 3; ligne++)
+        // Méthode pour annuler un coup en enlevant le jeton de la cellule correspondante
+        private void AnnulerCoup(PictureBox piece)
         {
-            for (int colonne = 0; colonne < tableLayoutPanel1.ColumnCount - 3; colonne++)
+            if (piece != null)
             {
-                for (int k = 0; k < 4; k++)
-                {
-                    PictureBox cellPictureBox = tableLayoutPanel1.GetControlFromPosition(colonne + k, ligne + 3 - k) as PictureBox;
-                    int valeurCase = (cellPictureBox != null && cellPictureBox.BackColor == Color.Red) ? joueurMax : (cellPictureBox != null && cellPictureBox.BackColor == Color.Yellow) ? joueurMin : 0;
-                    if (valeurCase == joueurMax)
-                        score++;
-                    else if (valeurCase == joueurMin)
-                        score--;
-                }
-                score += FenetreScore(score);
+                piece.BackColor = Color.Transparent; // Remet la couleur d'arrière-plan à transparent
+                piece.Tag = null; // Remet le Tag à null pour indiquer que la cellule est vide
             }
         }
-
-        return score;
     }
-
-    // Méthode auxiliaire pour calculer le score d'une fenêtre de 4 cases
-    public int FenetreScore(int score)
-    {
-        if (score == 4)
-            return 1000; // Joueur Max a gagné
-        else if (score == -4)
-            return -1000; // Joueur Min a gagné
-        else if (score == 3)
-            return 100; // Joueur Max est proche de gagner
-        else if (score == -3)
-            return -100; // Joueur Min est proche de gagner
-        else if (score == 2)
-            return 10; // Joueur Max a un avantage
-        else if (score == -2)
-            return -10; // Joueur Min a un avantage
-        else
-            return 0; // Pas de score significatif
-    }
-}
 }

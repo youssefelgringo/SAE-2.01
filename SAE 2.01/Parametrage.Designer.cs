@@ -41,8 +41,6 @@
             this.radioButton2 = new System.Windows.Forms.RadioButton();
             this.radioButton1 = new System.Windows.Forms.RadioButton();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.numericUpDown3 = new System.Windows.Forms.NumericUpDown();
-            this.label7 = new System.Windows.Forms.Label();
             this.numericUpDown2 = new System.Windows.Forms.NumericUpDown();
             this.label6 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
@@ -51,7 +49,6 @@
             this.groupBox1.SuspendLayout();
             this.panel1.SuspendLayout();
             this.groupBox2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             this.SuspendLayout();
@@ -169,6 +166,7 @@
             this.radioButton2.TabStop = true;
             this.radioButton2.Text = "Joueur contre IA";
             this.radioButton2.UseVisualStyleBackColor = true;
+            this.radioButton2.CheckedChanged += new System.EventHandler(this.radioButton2_CheckedChanged);
             this.radioButton2.Click += new System.EventHandler(this.radioButton2_Click);
             // 
             // radioButton1
@@ -181,12 +179,11 @@
             this.radioButton1.TabStop = true;
             this.radioButton1.Text = "Joueur contre Joueur";
             this.radioButton1.UseVisualStyleBackColor = true;
+            this.radioButton1.CheckedChanged += new System.EventHandler(this.radioButton1_CheckedChanged);
             this.radioButton1.Click += new System.EventHandler(this.radioButton1_Click);
             // 
             // groupBox2
             // 
-            this.groupBox2.Controls.Add(this.numericUpDown3);
-            this.groupBox2.Controls.Add(this.label7);
             this.groupBox2.Controls.Add(this.numericUpDown2);
             this.groupBox2.Controls.Add(this.label6);
             this.groupBox2.Controls.Add(this.label5);
@@ -197,37 +194,6 @@
             this.groupBox2.TabIndex = 1;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Disposition de la grille & nombre de manches à jouer";
-            // 
-            // numericUpDown3
-            // 
-            this.numericUpDown3.Location = new System.Drawing.Point(29, 164);
-            this.numericUpDown3.Maximum = new decimal(new int[] {
-            9,
-            0,
-            0,
-            0});
-            this.numericUpDown3.Minimum = new decimal(new int[] {
-            3,
-            0,
-            0,
-            0});
-            this.numericUpDown3.Name = "numericUpDown3";
-            this.numericUpDown3.Size = new System.Drawing.Size(44, 22);
-            this.numericUpDown3.TabIndex = 5;
-            this.numericUpDown3.Value = new decimal(new int[] {
-            3,
-            0,
-            0,
-            0});
-            // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(26, 145);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(177, 16);
-            this.label7.TabIndex = 4;
-            this.label7.Text = "Nombre de manches à jouer";
             // 
             // numericUpDown2
             // 
@@ -246,7 +212,7 @@
             this.numericUpDown2.Size = new System.Drawing.Size(44, 22);
             this.numericUpDown2.TabIndex = 3;
             this.numericUpDown2.Value = new decimal(new int[] {
-            6,
+            7,
             0,
             0,
             0});
@@ -322,7 +288,6 @@
             this.panel1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
             this.ResumeLayout(false);
@@ -346,11 +311,9 @@
         private System.Windows.Forms.ComboBox comboBox2;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Button button1;
         public System.Windows.Forms.NumericUpDown numericUpDown1;
         public System.Windows.Forms.NumericUpDown numericUpDown2;
-        public System.Windows.Forms.NumericUpDown numericUpDown3;
     }
 }
 
