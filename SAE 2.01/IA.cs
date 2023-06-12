@@ -233,12 +233,4 @@ namespace SAE_2._01
             }
         }
     }
-}        else if (score == 2)
-            return 10; // Joueur Max a un avantage
-        else if (score == -2)
-            return -10; // Joueur Min a un avantage
-        else
-            return 0; // Pas de score significatif
-    }
-}
 }
