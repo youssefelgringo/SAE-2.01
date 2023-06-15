@@ -19,7 +19,7 @@ namespace SAE_2._01
             random = new Random();
         }
 
-        public int MinMax(TableLayoutPanel tableLayoutPanel1, bool evalMax)
+        public int MinMax(TableLayoutPanel tableLayoutPanel1, int profondeur, bool evalMax)
         {
             if (profondeur == 0 || finPartie.VerifierVictoire(tableLayoutPanel1, tableLayoutPanel1.RowCount, tableLayoutPanel1.ColumnCount, null) || finPartie.VerifierMatchNul(tableLayoutPanel1, tableLayoutPanel1.RowCount, tableLayoutPanel1.ColumnCount))
             {
